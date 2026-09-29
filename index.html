@@ -190,7 +190,7 @@ td.qty-alert{background:var(--qty);color:#1d1d1d;font-weight:700}
         <p class="sub">momo · 蝦皮 · 91 · PC 訂單 → 今日出貨明細＋出貨申請紀錄單</p>
       </div>
     </div>
-    <p class="privacy">訂單只在這個瀏覽器裡處理，不會上傳。<span class="ver">V9.3</span></p>
+    <p class="privacy">訂單只在這個瀏覽器裡處理，不會上傳。<span class="ver">V9.4</span></p>
   </header>
 
   <section class="card batch" aria-labelledby="h-batch">
@@ -237,7 +237,7 @@ td.qty-alert{background:var(--qty);color:#1d1d1d;font-weight:700}
     <div id="stats" class="stats"></div>
     <div id="messages"></div>
     <div id="emptyState" class="empty">
-      <p>匯入訂單後，這裡會照工廠的出貨順序排好：<b>momo</b>（宅配通 → 711 → 全家）→ <b>蝦皮</b>（新竹 → 隔日 → 店到店 → 宅配 → 711 → 全家）→ <b>91</b>（大榮 → 711 → 全家）→ <b>PC</b>（大榮）。</p>
+      <p>匯入訂單後，這裡會照工廠的出貨順序排好：<b>momo</b>（宅配通 → 711 → 全家）→ <b>PC</b>（大榮）→ <b>91</b>（大榮 → 711 → 全家）→ <b>蝦皮</b>（新竹 → 隔日 → 店到店 → 宅配 → 711 → 全家）。</p>
     </div>
     <div id="previewWrap" class="table-wrap" hidden>
       <table id="preview">
@@ -540,26 +540,26 @@ window.EMBEDDED_TEMPLATES = {
   'use strict';
   const $ = s => document.querySelector(s);
   const NS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
-  const VERSION = 'V9.3';
+  const VERSION = 'V9.4';
 
   // ================= 物流設定（排序 / A 欄文字 / 底色） =================
-  // 排序：momo → 蝦皮 → 91；平台內依物流。fill：rgb 或 theme+tint（91 範例用佈景主題色 accent4 的淡化色）。
+  // 排序：momo → PC → 91 → 蝦皮（使用者 2026-09-29 確認）；平台內依物流。fill：rgb 或 theme+tint（91 範例用佈景主題色 accent4 的淡化色）。
   const SHIP = {
     'momo-home':        { p: 0,  platform: 'momo',   label: 'momo\n(宅配通)', name: 'momo 宅配通', fill: { rgb: 'FFFFFF00' } },
     'momo-seven':       { p: 1,  platform: 'momo',   label: 'momo\n(711)',    name: 'momo 7-11',   fill: { rgb: 'FFF9EC51' } },
     'momo-family':      { p: 2,  platform: 'momo',   label: 'momo\n(Family)', name: 'momo Family',   fill: { rgb: 'FFFCFFB3' } },
     'momo-unknown':     { p: 9,  platform: 'momo',   label: 'momo\n(超取未辨識)', name: 'momo 超取（未辨識）', fill: { rgb: 'FFFFCC99' }, blocking: true },
-    'shopee-hct':       { p: 10, platform: 'shopee', label: '蝦皮\n(新竹)',   name: '蝦皮 新竹', tpl: 'hct' },
-    'shopee-overnight': { p: 11, platform: 'shopee', label: '蝦皮\n(隔日)',   name: '蝦皮 隔日', tpl: 'overnight' },
-    'shopee-store':     { p: 12, platform: 'shopee', label: '蝦皮\n(店到店)', name: '蝦皮 店到店', tpl: 'store' },
-    'shopee-home':      { p: 13, platform: 'shopee', label: '蝦皮\n(宅配)',   name: '蝦皮 宅配', tpl: 'home' },
-    'shopee-seven':     { p: 14, platform: 'shopee', label: '蝦皮\n(711)',    name: '蝦皮 7-11', tpl: 'seven' },
-    'shopee-family':    { p: 15, platform: 'shopee', label: '蝦皮\n(Family)', name: '蝦皮 Family', tplFillId: 24 },
-    'shopee-other':     { p: 19, platform: 'shopee', label: '蝦皮\n(未辨識)', name: '蝦皮 其他物流', tpl: 'store' },
+    'shopee-hct':       { p: 30, platform: 'shopee', label: '蝦皮\n(新竹)',   name: '蝦皮 新竹', tpl: 'hct' },
+    'shopee-overnight': { p: 31, platform: 'shopee', label: '蝦皮\n(隔日)',   name: '蝦皮 隔日', tpl: 'overnight' },
+    'shopee-store':     { p: 32, platform: 'shopee', label: '蝦皮\n(店到店)', name: '蝦皮 店到店', tpl: 'store' },
+    'shopee-home':      { p: 33, platform: 'shopee', label: '蝦皮\n(宅配)',   name: '蝦皮 宅配', tpl: 'home' },
+    'shopee-seven':     { p: 34, platform: 'shopee', label: '蝦皮\n(711)',    name: '蝦皮 7-11', tpl: 'seven' },
+    'shopee-family':    { p: 35, platform: 'shopee', label: '蝦皮\n(Family)', name: '蝦皮 Family', tplFillId: 24 },
+    'shopee-other':     { p: 39, platform: 'shopee', label: '蝦皮\n(未辨識)', name: '蝦皮 其他物流', tpl: 'store' },
     '91-home':          { p: 20, platform: 'p91',    label: '91\n（大榮）',   name: '91 大榮',  fill: { theme: 7, tint: 0.7999816888943144 } },
     '91-seven':         { p: 21, platform: 'p91',    label: '91\n（711）',    name: '91 7-11',  fill: { theme: 7, tint: 0.5999938962981048 } },
     '91-family':        { p: 22, platform: 'p91',    label: '91\n（Family）', name: '91 Family',   fill: { theme: 7, tint: 0.3999755851924192 } },
-    'pc-home':          { p: 30, platform: 'pc',     label: 'PC\n(大榮)',     name: 'PC 大榮',  fill: { theme: 8, tint: 0.7999816888943144 } },
+    'pc-home':          { p: 10, platform: 'pc',     label: 'PC\n(大榮)',     name: 'PC 大榮',  fill: { theme: 8, tint: 0.7999816888943144 } },
     '91-unknown':       { p: 29, platform: 'p91',    label: '91\n（未辨識）', name: '91（物流未辨識）', fill: { rgb: 'FFFFCC99' }, blocking: true }
   };
   const PLATFORM_NAME = { momo: 'momo', shopee: '蝦皮', p91: '91', pc: 'PC' };
